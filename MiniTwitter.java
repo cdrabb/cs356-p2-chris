@@ -1,12 +1,8 @@
-
+//This is the driver class.
 public class MiniTwitter {
-
-	private AdminUI panel;
 	
 	public static void main(String args[])
 	{
-		MiniTwitter controller = new MiniTwitter();
 		AdminUI.getInstance();
-		//UserUI thang = new UserUI();
 	}
 }

@@ -1,15 +1,14 @@
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
-
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
+
 public class AdminUI implements ActionListener, UIManager, TwitterElement {
 
 	private static AdminUI instance = new AdminUI();
@@ -33,7 +32,6 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 	private ArrayList<TweetMessage> archives;
 	private int UGID;
 	private int UUID;
-	private TwitterGroup group;
 	private DefaultMutableTreeNode childNode;
 	
 	private AdminUI()
@@ -72,6 +70,10 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 		TwitterGroup child = new TwitterGroup(name, UGID++ +"");
 		addChildNode(child);
     }
+	
+	//Store child, create a node, add node to root IFF
+	//a group is not already selected. If a group is selected
+	//make the node a child of the selected node.
 	public void addChildNode(Group child)
 	{
 		boolean allowsChildren = child.isGroup();
@@ -88,7 +90,7 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 		updateWindow();	
 	}
 	
-	
+	//Closes and rebuilds window.
 	public void updateWindow()
 	{
 		frame.dispose();
@@ -106,6 +108,7 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 		manageFrame();
 	}
 	
+	//Handles frame operations
 	public void manageFrame()
 	{
 		frame = new JFrame("Admin Control Panel");
@@ -127,6 +130,7 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 		frame.setVisible(true);
 	}
 	
+	//Handles tree operations.
 	public void manageTree()
 	{
 		tree = new JTree(root);
@@ -142,6 +146,7 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 		scrollPane.setBounds(5,5,200,275);
 	}
 	
+	//Handles text areas.
 	public void manageTextArea()
 	{
 		userID = new JTextArea("User ID");
@@ -153,6 +158,7 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 		groupID.setFont(new Font("Courier New", Font.PLAIN, 16));
 	}
 	
+	//Handles buttons and their action listeners.
 	public void manageButtons()
 	{
 		addUser = new JButton("Add User");
@@ -250,6 +256,8 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 	public void actionPerformed(ActionEvent action) {
 	
 	}
+	
+	//Visit adminUI only to give it access to other elements. 
 	@Override
 	public void accept(TwitterElementVisitor visitor) {
 		for(Group group:nodes)

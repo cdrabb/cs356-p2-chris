@@ -1,4 +1,4 @@
-
+//This is the visitor class for the Visitor pattern.
 public interface TwitterElementVisitor {
 
 	public void visit(AdminUI admin);

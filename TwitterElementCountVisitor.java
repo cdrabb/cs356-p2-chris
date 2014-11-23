@@ -1,4 +1,4 @@
-
+//This visitor class is used for counting the data we want to collect.
 public class TwitterElementCountVisitor implements TwitterElementVisitor {
 
 	private int userTotal = 0;

@@ -1,14 +1,11 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.AbstractButton;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ListModel;
 
 
 public class UserUI implements UIManager {
@@ -26,16 +23,10 @@ public class UserUI implements UIManager {
 	public UserUI(final TwitterUser user)
 	{
 		this.user = user;
-		
 		buildUI();
-		int newsFeedSize = user.getNewsFeed().getSize();
-		int followingSize = user.getFollowers().getSize();
-		//while(true)
-		//{
-			if((newsFeedSize < user.getNewsFeed().getSize()) || followingSize < user.getFollowers().getSize())
-				refresh();
-		//}
 	}
+	
+	//Handles buttons and action listeners.
 	@Override
 	public void manageButtons() {
 		// TODO Auto-generated method stub
@@ -46,6 +37,8 @@ public class UserUI implements UIManager {
 		followUser.setBounds(160, 5, 150, 35);
 		followUser.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		//Perform action if the user is not trying to follow themselves and
+        		//specified user actually exists.
         	    if(!userID.getText().equals(user.getName()) && 
         	    		AdminUI.getInstance().getElements().containsKey(userID.getText()))
         	    	user.follow((TwitterUser)AdminUI.getInstance().getElements().get(userID.getText()));
@@ -63,6 +56,8 @@ public class UserUI implements UIManager {
         	  }
         	});
 	}
+	
+	//Handles frame operations.
 	@Override
 	public void manageFrame() {
 		// TODO Auto-generated method stub
@@ -78,6 +73,8 @@ public class UserUI implements UIManager {
 		frame.setSize(330, 370);
 		frame.setVisible(true);
 	}
+	
+	//Handles text areas.
 	@Override
 	public void manageTextArea() {
 		// TODO Auto-generated method stub
@@ -88,6 +85,8 @@ public class UserUI implements UIManager {
 		tweetMsg.setBounds(5, 170, 150, 35);
 		tweetMsg.setLineWrap(true);
 	}
+	
+	//refreshes the UI
 	public void refresh()
 	{
 		following = new JList<TwitterUser>(user.getFollowing());

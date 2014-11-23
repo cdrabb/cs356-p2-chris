@@ -1,4 +1,4 @@
-
+//An interface for managing the two user interfaces.
 public interface UIManager {
 
 	public void manageButtons();

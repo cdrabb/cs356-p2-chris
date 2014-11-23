@@ -2,13 +2,12 @@ import java.util.Hashtable;
 
 import javax.swing.DefaultListModel;
 
-public class TwitterUser implements User, Viewer, Group, TwitterElement {
+public class TwitterUser implements User, Observer, Group, TwitterElement {
 	private DefaultListModel<TwitterUser> following;
 	private DefaultListModel<TwitterUser> followers;
 	private DefaultListModel<TweetMessage> newsFeed;
 	private DefaultListModel<TweetMessage> archive;
 	private TweetMessage tweet;
-	private String UGID;
 	private boolean isGroup;
 	private Hashtable<String, Group> children;
 	private String name;
@@ -74,15 +73,12 @@ public class TwitterUser implements User, Viewer, Group, TwitterElement {
 	{
 		return newsFeed;
 	}
-	public String getUGID()
-	{
-		if(UGID == null)
-			return "0";
-		return UGID;
-	}
  
 	public void follow(TwitterUser user)
 	{
+		//If not already following the user, follow them,
+		//add me to their followers and add their history of 
+		//messages to my newsfeed.
 		if(!following.contains(user))
         {
             following.addElement(user);
@@ -94,6 +90,8 @@ public class TwitterUser implements User, Viewer, Group, TwitterElement {
 	
 	public void post(String message)
 	{
+		//Add tweet to my newsfeed, archive, and Admin archives
+		//then notify my followers.
 		tweet = new TweetMessage(message,this);
 		newsFeed.addElement(tweet);
 		archive.addElement(tweet);
@@ -103,12 +101,14 @@ public class TwitterUser implements User, Viewer, Group, TwitterElement {
 
 	public void notifyFollowers() 
 	{
+		//Notify followers to update.
 		for(int i = 0; i < followers.getSize(); i++)
 			followers.elementAt(i).update(this);
 			
 	}
 	public void update(TwitterUser user)
 	{
+		//New tweet is added to the newsfeed.
 		newsFeed.addElement(user.tweet);
 	}
 

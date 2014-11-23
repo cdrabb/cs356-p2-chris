@@ -1,8 +1,5 @@
 import java.util.Hashtable;
 
-import javax.swing.DefaultListModel;
-
-
 public class TwitterGroup implements Group, TwitterElement {
 	
 	private boolean isGroup;
@@ -25,10 +22,12 @@ public class TwitterGroup implements Group, TwitterElement {
 	{
 		
 	}
+	//Returns all members of the group.
 	public Hashtable<String, Group> getChildren()
 	{
 		return children;
 	}
+	//returns specific member of the group.
 	public Group getChild(String name)
 	{
 		return children.get(name);
@@ -37,7 +36,8 @@ public class TwitterGroup implements Group, TwitterElement {
 	{
 		return isGroup;
 	}
-	public void setGroup(boolean isGroup) {
+	public void setGroup(boolean isGroup) 
+	{
 		this.isGroup = isGroup;
 	}
 	public String getName()
@@ -53,8 +53,8 @@ public class TwitterGroup implements Group, TwitterElement {
 		return getName();
 	}
 	@Override
-	public void accept(TwitterElementVisitor visitor) {
-		// TODO Auto-generated method stub
+	public void accept(TwitterElementVisitor visitor) 
+	{
 		visitor.visit(this);
 	}
 }
