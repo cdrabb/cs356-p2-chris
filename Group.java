@@ -16,5 +16,6 @@ public interface Group extends TwitterElement {
 	public String getName();
 	public String getID();
 	public String toString();
+	public long getCreationTime();
 }
 

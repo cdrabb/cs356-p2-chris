@@ -12,18 +12,20 @@ public class TwitterUser implements User, Observer, Group, TwitterElement {
 	private Hashtable<String, Group> children;
 	private String name;
 	private String ID;
+	private long creationTime;
+	private long lastUpdate = 0;
 	
 	public TwitterUser(String name, String ID)
 	{
 		this.name = name;
 		this.ID = ID;
-		this.isGroup = false;
+		isGroup = false;
 		following = new DefaultListModel<TwitterUser>();
 		followers = new DefaultListModel<TwitterUser>();
 		newsFeed = new DefaultListModel<TweetMessage>();
 		archive =  new DefaultListModel<TweetMessage>();
-
-	}
+		creationTime = System.currentTimeMillis(); //This is displayed in the header when	                                           
+	}                                              //opening user view.
 	public void add(Group child)
 	{
 		children.put(child.getName(), child);
@@ -57,7 +59,7 @@ public class TwitterUser implements User, Observer, Group, TwitterElement {
 	}
 	public String toString()
 	{
-		return getName();
+		return getName() + " - Updated " + getLastUpdate() + " seconds ago.";
 	}
 	
 	public DefaultListModel<TwitterUser> getFollowing()
@@ -97,6 +99,7 @@ public class TwitterUser implements User, Observer, Group, TwitterElement {
 		archive.addElement(tweet);
 		AdminUI.getInstance().getArchives().add(tweet);
 		notifyFollowers();
+		lastUpdate = System.currentTimeMillis();
 	}
 
 	public void notifyFollowers() 
@@ -110,6 +113,16 @@ public class TwitterUser implements User, Observer, Group, TwitterElement {
 	{
 		//New tweet is added to the newsfeed.
 		newsFeed.addElement(user.tweet);
+	}
+	public long getCreationTime()
+	{
+		return (System.currentTimeMillis() - creationTime)/1000;
+	}
+	public long getLastUpdate()
+	{
+		if(lastUpdate > 0)
+			return (System.currentTimeMillis() - lastUpdate)/1000;
+		return 0;
 	}
 
 	public void unfollow() 

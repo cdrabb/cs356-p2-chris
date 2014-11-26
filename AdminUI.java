@@ -24,6 +24,8 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 	private JButton showGroup;
 	private JButton showMessages;
 	private JButton showPercentage;
+	private JButton validateUsers;
+	private JButton lastUpdate;
 	private JButton [] buttons;
 	private JTextArea userID;
 	private JTextArea groupID;
@@ -38,7 +40,7 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 	{
 	    UGID = 1;
         UUID = 1;
-        buttons = new JButton [7];
+        buttons = new JButton [9];
         elements = new Hashtable<String, Group>();
         nodes = new ArrayList<Group>();
         archives = new ArrayList<TweetMessage>();
@@ -90,6 +92,36 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 		updateWindow();	
 	}
 	
+	//Ensures that all user IDs are valid
+	public void validateUsers()
+	{
+		for(Group group:nodes)
+		{
+			if(group.getName().contains(" "))
+				System.out.println("Invalid: " + group.getName());
+		}
+			
+	}
+	
+	//Prints out last updated user
+	public void lastUpdate()
+	{
+		TwitterUser lastUpdatedUser = new TwitterUser("dummy", "dummy");
+		TwitterUser temp;
+		
+		for(Group group:nodes)
+		{
+			if(!group.isGroup())
+			{
+				temp = (TwitterUser)group;
+				if(temp.getLastUpdate() < lastUpdatedUser.getLastUpdate())
+					lastUpdatedUser = temp;
+			}
+		}
+		System.out.println(lastUpdatedUser.getName() + " last updated " 
+				+ lastUpdatedUser.getLastUpdate() + " seconds ago.");
+	}
+	
 	//Closes and rebuilds window.
 	public void updateWindow()
 	{
@@ -125,6 +157,8 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
 		frame.add(showPercentage);
 		frame.add(userID);
 		frame.add(groupID);
+		frame.add(validateUsers);
+		frame.add(lastUpdate);
 		
 		frame.setSize(685,325);
 		frame.setVisible(true);
@@ -244,6 +278,26 @@ public class AdminUI implements ActionListener, UIManager, TwitterElement {
         	  }
         	});
 		buttons[6] = showPercentage;
+		
+		validateUsers = new JButton("Validate Users");
+		validateUsers.setActionCommand("validates users");
+		validateUsers.setBounds(210, 155, 220, 35);
+		validateUsers.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		validateUsers();
+        	  }
+        	});
+		buttons[7] = validateUsers;
+		
+		lastUpdate = new JButton("Show Last Updated");
+		lastUpdate.setActionCommand("shows last updated");
+		lastUpdate.setBounds(440, 155, 220, 35);
+		lastUpdate.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		lastUpdate();
+        	  }
+        	});
+		buttons[8] = lastUpdate;
 		
 		for(JButton button : buttons)
 		{

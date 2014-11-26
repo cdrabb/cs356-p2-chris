@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,7 +18,7 @@ public class UserUI implements UIManager {
 	private JTextArea tweetMsg;
 	private JList<TwitterUser> following;
 	private JList<TweetMessage> newsFeed;
-	private JScrollPane followingScrollPane;
+	private JScrollPane followingScrollPane; //Refreshes only when following new user or creating new instance.
 	private JScrollPane newsFeedScrollPane;
 	
 	public UserUI(final TwitterUser user)
@@ -61,7 +62,8 @@ public class UserUI implements UIManager {
 	@Override
 	public void manageFrame() {
 		// TODO Auto-generated method stub
-		frame = new JFrame(user.getName() + "'s profile");
+		frame = new JFrame(user.getName() + "'s profile - Created " 
+				+ user.getCreationTime() + " seconds ago.");
 		frame.setLayout(null);
 		frame.add(userID);
 		frame.add(followUser);

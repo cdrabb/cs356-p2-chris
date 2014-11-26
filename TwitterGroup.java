@@ -6,13 +6,15 @@ public class TwitterGroup implements Group, TwitterElement {
 	private Hashtable<String, Group> children;
 	private String name;
 	private String ID;
+	private long creationTime; //This will be displayed in treeview on AdminUI
 	
 	public TwitterGroup(String name, String ID)
 	{
 		this.name = name;
 		this.ID = ID;
-		this.isGroup = true;
-		this.children = new Hashtable<String, Group>();
+		isGroup = true;
+		children = new Hashtable<String, Group>();
+		creationTime = System.currentTimeMillis();	
 	}
 	public void add(Group child)
 	{
@@ -50,7 +52,11 @@ public class TwitterGroup implements Group, TwitterElement {
 	}
 	public String toString()
 	{
-		return getName();
+		return getName() + " - Created " + getCreationTime() + " seconds ago.";
+	}
+	public long getCreationTime()
+	{
+		return (System.currentTimeMillis() - creationTime)/1000;
 	}
 	@Override
 	public void accept(TwitterElementVisitor visitor) 
